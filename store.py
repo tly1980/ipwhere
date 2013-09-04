@@ -7,7 +7,7 @@ import array
 
 
 class InMemStore(object):
-    pack_fmt = '=iff'
+    pack_fmt = '=IIff'
     __name__ = 'InMemStore'
 
     def __init__(self):
@@ -38,13 +38,13 @@ class InMemStore(object):
 
         self.location_info.append(
             struct.pack(
-                self.pack_fmt, loc_info['loc_id'], loc_info['longitude'], loc_info['latitude'])
+                self.pack_fmt, detail_idx, loc_info['loc_id'], loc_info['longitude'], loc_info['latitude'])
         )
 
     def find_location_by_ip(self, ip_int):
         i = bisect.bisect_right(self.ip_start_idx, ip_int)
         s = self.location_info[i-1]
-        loc_id, longtitude, latitude = struct.unpack(self.pack_fmt, s)
+        detail_idx, loc_id, longtitude, latitude = struct.unpack(self.pack_fmt, s)
 
         return {
             'loc_id': loc_id,
