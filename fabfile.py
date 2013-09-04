@@ -7,6 +7,7 @@ import utils
 import bson
 from pympler import summary
 from pympler import muppy
+import timeit
 
 
 redis_srv = redis.StrictRedis(host='localhost', port=6379, db=0)
@@ -66,6 +67,32 @@ def load_memstore(load_from='.'):
     summary.print_(diff)
     #utils.memusage_overall()
     return store_instance
+
+
+import socket
+import struct
+
+
+def ip2long(ip):
+    """
+    Convert an IP string to long
+    """
+    packedIP = socket.inet_aton(ip)
+    return struct.unpack("!L", packedIP)[0]
+
+
+@task
+def benchmark():
+    store = load_memstore()
+    for num in (10000, 50000, 100000):
+        tit = timeit.Timer(lambda: store.find_location_by_ip(ip2long('165.69.2.3')))
+        #import ipdb; ipdb.set_trace()
+        print '{}: {}'.format(num, tit.timeit(number=num))
+
+    for num in (10000, 50000, 100000):
+        tit = timeit.Timer(lambda: store.find_location_by_ip(ip2long('54.252.136.40')))
+        #import ipdb; ipdb.set_trace()
+        print '{}: {}'.format(num, tit.timeit(number=num))
 
 
 @task
