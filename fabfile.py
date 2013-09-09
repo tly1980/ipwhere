@@ -55,17 +55,19 @@ def get_sqlite_cursor(db_file):
     return conn.cursor()
 
 
-def load_memstore(load_from='.'):
-    sum1 = summary.summarize(muppy.get_objects())
+def load_memstore(load_from='.', memdiff=False):
+    if memdiff:
+        sum1 = summary.summarize(muppy.get_objects())
     if not load_from.startswith('/'):
         load_from = os.path.join(os.getcwd(), load_from)
 
     store_instance = store.InMemStore()
     store_instance.load(load_from)
-    sum2 = summary.summarize(muppy.get_objects())
-    diff = summary.get_diff(sum1, sum2)
-    summary.print_(diff)
-    #utils.memusage_overall()
+    if memdiff:
+        sum2 = summary.summarize(muppy.get_objects())
+        diff = summary.get_diff(sum1, sum2)
+        summary.print_(diff)
+
     return store_instance
 
 
