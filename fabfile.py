@@ -26,12 +26,12 @@ def benchmark(path='./data/inmemstore.pickle'):
     store = ipwhere.store.InMemStore.load(path)
     for num in (10000, 50000, 100000):
         tit = timeit.Timer(lambda: store.find_location_by_ip(
-            ipwhere.utils.ip2long('165.69.2.3')))
+            '165.69.2.3'))
         print '{}: {}'.format(num, tit.timeit(number=num))
 
     for num in (10000, 50000, 100000):
         tit = timeit.Timer(lambda: store.find_location_by_ip(
-            ipwhere.utils.ip2long('54.252.136.40')))
+            '54.252.136.40'))
         print '{}: {}'.format(num, tit.timeit(number=num))
 
 

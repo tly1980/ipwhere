@@ -4,6 +4,8 @@ import os
 import cPickle
 import struct
 
+import utils
+
 
 class InMemStore(object):
     pack_fmt = '=iiiff'
@@ -54,7 +56,9 @@ class InMemStore(object):
             (region_info['country_name'], region_info['region_name'])
         )
 
-    def find_location_by_ip(self, ip_int):
+    def find_location_by_ip(self, ip):
+        ip_int = utils.ip2long(ip)
+
         i = bisect.bisect_right(self.ip_start_idx, ip_int)
         info_bin = self.location_info[i-1]
         region_idx, city_name_idx, postal_code_idx, longtitude, latitude\
