@@ -17,7 +17,8 @@ logging.config.dictConfig(
 
 
 application = tornado.web.Application([
-    (r'/(?P<format>[^\/]+)/(?P<ip>[^\/]+)', handler.IPQueryHandler),
+    (r'/(?P<format>[^\/]+)/(?P<ip>[\d\.]+)', handler.IPQueryHandler),
+    (r'/(?P<format>[^\/]+)/batch', handler.IPBatchQueryHandler),
 ])
 
 
